@@ -12,7 +12,7 @@ function gameBuffering(map) {
             map.tileMap.neighbor = tileOrganize(map);
             console.log(map.tileMap.neighbor);
             createGameObjects(map);
-            gameStart(map);
+            // gameStart(map);
         };
     }
 
