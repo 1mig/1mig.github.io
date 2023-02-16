@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body, body * {
+            margin:0;padding: 0;
+        }
+        canvas {
+            position: absolute;
+            top:0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas, ctx, keymap = {};
+        
+        onkeydown = onkeyup = function(e){ e = e || event; keymap[e.keyCode] = e.type == 'keydown';};
+
+        x = 0;
+        y = 0;
+        
+        
+        // (function loop() {
+            if (canvas === undefined || canvas === null) canvas = document.getElementById('canvas');
+            if (canvas !== null && canvas !== undefined && (ctx === undefined || ctx === null)) ctx = canvas.getContext('2d');
+
+            canvas.width = 400;
+            canvas.height = 200;
+
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            // console.log((lerp(x, gx, t) * 1000)/1000);
+            x = 0;
+            y = 0;
+            t = 0;
+            
+            var origin = [100, 100];
+            var reached = 100;
+            (function loop() {
+                let fade = 0;
+
+                for (let a = 0, b = 1; 1; a += b, b /= 2) {
+                    if (t >= (7 - 4 * a) / 11) {
+                        fade = -Math.pow((11 - 6 * a - 11 * t) / 4, 2) + Math.pow(b, 2)
+                        break;
+                    }
+                }
+
+                t += 0.0125;
+                y = reached * fade; //lerp(y, reached, .5);
+                console.log(y);
+                if (reached - y < .5 || y < 0) y = reached;
+                line(x,0,x,y);
+                if (y !== reached) requestAnimationFrame(loop);
+                x+=5;
+
+            })();
+
+
+            // requestAnimationFrame(loop);
+        // })();
+
+        function line(fromX, fromY, toX, toY) {
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineWidth = 2;
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+        }
+
+        function circle(x, y) {
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(x,y,5,5);
+        }
+
+        function lerp(start, end, t) {
+            var ease = (t * t * (3.0 - 2.0 * t));
+            
+            return start * (1-t) + end * t;
+        }
+        
+    </script>
+</body>
+</html>

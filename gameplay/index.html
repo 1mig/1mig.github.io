@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charmion</title>
+    <style>
+        * {
+            margin: 0 auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            text-align: center;
+        }
+        canvas {
+            width: 1200px;
+            height: 50.625%;
+            background: white;
+            margin: 10px auto;
+            image-rendering: pixelated;
+        }
+        span {
+            color:white;
+            margin: 10px;
+            padding: 10px;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none;
+        }
+        span:hover {
+            color:orange;
+        }
+    </style>
+</head>
+<body>
+<div><canvas></canvas></div>
+<div>
+    <span>DILATE</span>
+    <span>EROSION</span>
+    <span>CELLULAR</span>
+    <span style="display: none;">Start Game</span>
+</div>
+<!-- <script src="./resources.js"></script> -->
+<script src="./models/game.js"></script>
+<!-- <script src="./models/player.js"></script> -->
+<script src="./functions.js"></script>
+<script src="./functions_fresh.js"></script>
+<script src="./main.js"></script>
+<script>
+    window.onload = function () {
+        const spans = document.getElementsByTagName('span');
+        spans[0].addEventListener('click', function () {
+            dilate(map);
+            displayMap(map, context);
+            console.log(this.innerText, 'clicked');
+        });
+        spans[1].addEventListener('click', function () {
+            erosion(map);
+            displayMap(map, context);
+            console.log(this.innerText, 'clicked');
+        });
+        spans[2].addEventListener('click', function () {
+            cellularAutomata(map);
+            displayMap(map, context);
+            console.log(this.innerText, 'clicked');
+        });
+        spans[3].addEventListener('click', function () {
+            gameStart(map);
+            console.log(this.innerText, 'clicked');
+        });
+    }
+</script>
+</body>
+</html>

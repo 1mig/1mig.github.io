@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body, body * {
+            margin:0;padding: 0;
+        }
+        canvas {
+            position: absolute;
+            top:0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas, ctx, keymap = {};
+        
+        onkeydown = onkeyup = function(e){ e = e || event; keymap[e.keyCode] = e.type == 'keydown';};
+
+        x = 0;
+        y = 0;
+        vx = 0;
+        vy = 0;
+        gx = 200;
+        gy = 20;
+        t = 0.5/4;
+        speed = 1;
+        cd = 5;
+        
+        (function loop() {
+            if (canvas === undefined || canvas === null) canvas = document.getElementById('canvas');
+            if (canvas !== null && canvas !== undefined && (ctx === undefined || ctx === null)) ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            // console.log((lerp(x, gx, t) * 1000)/1000);
+            x = (Math.abs(gx - (Math.floor(lerp(x, gx, t) * 1000) / 1000)) >= .5 ? lerp(x, gx, t) : gx);
+            y = (Math.abs(gy - (Math.floor(lerp(y, gy, t) * 1000) / 1000)) >= .5 ? lerp(y, gy, t) : gy);
+            // console.log(x, y);
+            circle(x, y);
+            
+            vx = 0;vy=0;
+
+            if (gx === x && gy === y) {
+                if (keymap['37']) {
+                    // left
+                    vx += -speed;
+                    x += vx;
+                    gx = x;
+                }
+                if (keymap['38']) {
+                    // top
+                    vy += -speed;
+                    y += vy;
+                    gy = y;
+                }
+                if (keymap['39']) {
+                    // right
+                    vx += speed;
+                    x += vx;
+                    gx = x;
+                }
+                if (keymap['40']) {
+                    // bottom
+                    vy += speed;
+                    y += vy;
+                    gy = y;
+                }
+            }
+
+            if (keymap['16']) {
+                if (gx === x && gy === y & cd === 0) {
+                    gx += (vx*50);
+                    gy += (vy*50);
+                    if (vx > 0) gx += 5;
+                    if (vy > 0) gy += 5;
+                    cd = 60*2;
+                } 
+            }
+            if (cd > 0) --cd;
+            gx = Math.round(gx);
+            gy = Math.round(gy);
+
+            
+            requestAnimationFrame(loop);
+        })();
+
+        function circle(x, y) {
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(x,y,5,5);
+        }
+
+        function lerp(start, end, t) {return start * (1-t) + end * t;}
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charmion</title>
+    <style>
+        * {
+            margin: 0 auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            text-align: center;
+            font-family: Arial;
+        }
+        .container {
+            width: 1200px;
+            height: 50.625%;
+            background-color: #181818;
+            margin: 10px auto;
+            position: relative;
+        }
+        canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        span {
+            color:white;
+            margin: 5px 10px;
+            padding: 5px 10px;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none;
+        }
+        span:hover {
+            color:orange;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <span>Load Image</span>
+    <span>Set Tile Size</span>
+    <span>Eraser</span>
+    <span>Collision Brush</span>
+    <span>Tile Brush</span>
+    <span>Directional Brush</span>
+    <span>Save</span>
+</div>
+<div class="container"><canvas></canvas><canvas></canvas></div>
+<script src="./functions.js"></script>
+<script src="./editor.js"></script>
+<script>
+
+    window.onload = function () {
+        const spans = document.getElementsByTagName('span');
+        spans[0].addEventListener('click', function () {
+            loadImage();
+            console.log(this.innerText, 'clicked');
+        });
+        spans[1].addEventListener('click', function () {
+            setTilePixelSize();
+            console.log(this.innerText, 'clicked');
+        });
+        spans[2].addEventListener('click', function () {
+            tile_constraints.brush = 3;
+            console.log(this.innerText, 'clicked');
+        });
+        spans[3].addEventListener('click', function () {
+            tile_constraints.brush = 0;
+            console.log(this.innerText, 'clicked');
+        });
+        spans[4].addEventListener('click', function () {
+            tile_constraints.brush = 1;
+            console.log(this.innerText, 'clicked');
+        });
+        spans[5].addEventListener('click', function () {
+            tile_constraints.brush = 2;
+            console.log(this.innerText, 'clicked');
+        });
+        spans[6].addEventListener('click', function () {
+            console.log(tile_constraints.toJson());
+            console.log(this.innerText, 'clicked');
+        });
+    }
+</script>
+</body>
+</html>
